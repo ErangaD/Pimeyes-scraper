@@ -35,7 +35,7 @@ def upload(url, path, use_proxy):
     
     results = None
     currenturl = None 
-    # 'CybotCookiebotDialog'
+
     try:
         driver.get(url)
         upload_button = WebDriverWait(driver, 20).until(
@@ -43,7 +43,7 @@ def upload(url, path, use_proxy):
         )
 
         time.sleep(2)
-        
+
         driver.execute_script("""
             var element = document.getElementById('CybotCookiebotDialog');
             if (element) {
