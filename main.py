@@ -35,12 +35,21 @@ def upload(url, path, use_proxy):
     
     results = None
     currenturl = None 
-
+    # 'CybotCookiebotDialog'
     try:
         driver.get(url)
         upload_button = WebDriverWait(driver, 20).until(
             EC.element_to_be_clickable((By.XPATH, '//*[@id="hero-section"]/div/div[1]/div/div/div[1]/button[2]'))
         )
+
+        time.sleep(2)
+        
+        driver.execute_script("""
+            var element = document.getElementById('CybotCookiebotDialog');
+            if (element) {
+                element.parentNode.removeChild(element);
+            }
+        """)
 
         upload_button.click()
         
@@ -49,11 +58,16 @@ def upload(url, path, use_proxy):
         )
 
         file_input.send_keys(path)
+        time.sleep(7)
 
-        agreement1_xpath = '#app > div.wrapper.mobile-fullscreen-mode.mobile-full-height > div > div > div > div > div > div > div.permissions > div:nth-child(1) > label > input[type=checkbox]'
-        agreement2_xpath = '#app > div.wrapper.mobile-fullscreen-mode.mobile-full-height > div > div > div > div > div > div > div.permissions > div:nth-child(2) > label > input[type=checkbox]'
-        agreement3_xpath = '#app > div.wrapper.mobile-fullscreen-mode.mobile-full-height > div > div > div > div > div > div > div.permissions > div:nth-child(3) > label > input[type=checkbox]'
-        submit_xpath = '#app > div.wrapper.mobile-fullscreen-mode.mobile-full-height > div > div > div > div > div > div > button'
+        # agreement1_xpath = '#app > div.wrapper.mobile-fullscreen-mode.mobile-full-height > div > div > div > div > div > div > div.permissions > div:nth-child(1) > label > input[type=checkbox]'
+        # agreement2_xpath = '#app > div.wrapper.mobile-fullscreen-mode.mobile-full-height > div > div > div > div > div > div > div.permissions > div:nth-child(2) > label > input[type=checkbox]'
+        # agreement3_xpath = '#app > div.wrapper.mobile-fullscreen-mode.mobile-full-height > div > div > div > div > div > div > div.permissions > div:nth-child(3) > label > input[type=checkbox]'
+        
+        agreement1_xpath = '.form-group:nth-child(1) input'
+        agreement2_xpath = '.form-group:nth-child(2) > .checkbox > input'
+        agreement3_xpath = '.form-group:nth-child(3) > .checkbox > input'
+        submit_xpath = 'button:nth-child(5)'
 
         WebDriverWait(driver, 15).until(EC.element_to_be_clickable((By.CSS_SELECTOR, agreement1_xpath))).click()
         WebDriverWait(driver, 15).until(EC.element_to_be_clickable((By.CSS_SELECTOR, agreement2_xpath))).click()
@@ -62,7 +76,7 @@ def upload(url, path, use_proxy):
 
         time.sleep(5)
         currenturl = driver.current_url
-        resultsXPATH = '//*[@id="results"]/div/div/div[3]/div/div/div[1]/div/div[1]/button/div/span/span'
+        resultsXPATH = '//*[@id="results"]/div/div[2]/div[1]/div/div/div[1]/div/div[1]/button/div/span/span'
         results = WebDriverWait(driver, 10).until(
             EC.element_to_be_clickable((By.XPATH, resultsXPATH))
         ).text
